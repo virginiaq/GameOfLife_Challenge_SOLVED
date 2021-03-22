@@ -42,12 +42,10 @@ void ClearBoard(int (&dstBoard)[boardXSize][boardYSize])
 // Counts the number of neighbours for the specified cell
 int Neighbours(int (&board)[boardXSize][boardYSize], int x, int y)
 {
-
-	// was it necessary to set dx and dy to 0?
+	
 	int dx, dy, ax, ay;
 	int n = 0;
-	// It's not checking the edges in the right way
-	// i.e. if x or y == 0 it needs to count their opposites on the grid
+	// If x or y == 0 it needs to count their opposites on the grid
 
 	for (dx = -1; dx <= 1; ++dx)
 	{
@@ -81,8 +79,7 @@ int Neighbours(int (&board)[boardXSize][boardYSize], int x, int y)
 			}
 		}
 	}
-	// The neighbouring count was counting itself as neighbour!!!
-	// So it subtracts the value of its own coords
+	// It subtracts the value of its own coords
 	return n - board[x][y];
 }
 
@@ -94,9 +91,8 @@ void DrawBoard()
 	coord.X = 0;
 	coord.Y = 0;
 
-	// Sets the cursor to the top of the console window.
-	// If you're not on a Windows platform, feel free to adapt this to ANSI control sequences,
-	// or just print out each step sequentially
+	// Sets the cursor to the top of the console window
+	
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 
 	for (int y = 0; y < boardYSize; ++y)
@@ -120,8 +116,6 @@ void NextStep(int (&board)[boardXSize][boardYSize])
 		{
 			int n = Neighbours(board, x, y);
 
-			// Some conditions were assigning values instead of comparing
-			// and weren't covering all rules
 			if (board[x][y] == alive && (n < 2 || n > 3))
 			{
 				BCopy[x][y] = dead;
@@ -146,11 +140,6 @@ void SetupBoard(int (&board)[boardXSize][boardYSize])
 {
 	ClearBoard(Board);
 
-	// To find out if the problem was the neighbouring count or the next step func
-	// I changed the starting point of blinker and glider so they didn't touch the edges
-	// It was in fact the neighbour count. After changing it I put the values back
-
-	// And it works!!
 	if (strcmp(boardSetup, "blinker") == 0)
 	{
 		board[1][0] = alive;
@@ -165,7 +154,7 @@ void SetupBoard(int (&board)[boardXSize][boardYSize])
 		board[1][2] = 1;
 		board[0][1] = 1;
 	}
-	// I doubled the size of the board so the flower could fit properly with this setup
+	
 	else if (strcmp(boardSetup, "flower") == 0)
 	{
 		board[4][6] = 1;
